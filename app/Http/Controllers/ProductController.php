@@ -18,7 +18,7 @@ class ProductController extends Controller
   public function show($product){
     return view('products.show');
   }
-  public function edit(){
+  public function edit($product){
     return "showing the form to edit the product with the id {$product}";
   }
   // public function update(){
