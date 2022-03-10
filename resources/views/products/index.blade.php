@@ -1,36 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>index</title>
-</head>
-<body>
-  <h2>List of Products</h2>
+@extends('layouts.app')
 
+@section('content')
+
+
+  <h2>List of Products</h2>
+  <a href="{{ route('products.create') }}" class="btn btn-success">Create</a>
+
+  @if(empty($products))
+    <div class="arlert alert-warnind">La lista de Productos esta vacia</div>
+
+  @else
   <div class="table-responsive">
     <table class="table table-striped">
       <thead class="thead-light">
         <tr>
-          <th>id</th>
-          <th>title</th>
-          <th>description</th>
+          <th>Id</th>
+          <th>Title</th>
+          <th>Description</th>
+          <th>Precio</th>
+          <th>Stock</th>
+          <th>Status</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
-        <th>
-          <td>1</td>
-          <td>jabon</td>
-          <td>el mejor jabon</td>
-        </th>
-        <th>
-          <td>2</td>
-          <td>shampoo</td>
-          <td>El mejor shampo</td>
-        </th>
-      </tbody>
+        @foreach($products as $product)
+          <tr>
+            <td>{{ $product->id}}</td>
+            <td>{{ $product->title}}</td>
+            <td>{{ $product->description}}</td>
+            <td>{{ $product->price}}</td>
+            <td>{{ $product->stock}}</td>
+            <td>{{ $product->status}}</td>
+            <td>
+              <a href="{{route('products.show', ['product'=> $product->id]) }}" class="btn btn-link">Show</a>
+              <a href="{{route('products.edit', ['product'=> $product->id]) }}" class="btn btn-link">Edit</a>
+              <form action="{{route('products.destroy', ['product'=> $product->id])}}" method="post" class="d-inline">
+                @csrf
+                @method('DELETE')
+
+                <button type="submit" class="btn btn-danger">Delete</button>
+              </form>
+            </td>
+          </tr>
+        @endforeach
     </table>
   </div>
-</body>
-</html>
+  @endif
+@endsection
