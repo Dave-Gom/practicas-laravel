@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Order;
+use App\Models\Payment;
 
 class User extends Authenticatable
 {
@@ -55,5 +56,15 @@ class User extends Authenticatable
 
     public function orders(){
       return $this->hasMany(Order::class, 'customer_id');
+    }
+
+    /**
+     * Get all of the payments for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     */
+    public function payments()  
+    {
+        return $this->hasManyThrough(Payment::class, Order::class, 'customer_id');
     }
 }
